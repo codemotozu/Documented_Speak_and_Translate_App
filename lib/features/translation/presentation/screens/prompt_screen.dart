@@ -48,8 +48,7 @@ class _PromptScreenState extends ConsumerState<PromptScreen> {
   void _initPorcupine() async {
     try {
       _porcupineManager = await PorcupineManager.fromBuiltInKeywords(
-        // 'PICOVOICE_API_KEY',
-        '79pMNpkBL/Ssr8wQ4kFF8vqeB0mPwX0G7/FEEaaZfsJgAzVoo07xug==',
+         'PICOVOICE_API_KEY',
         [BuiltInKeyword.JARVIS, BuiltInKeyword.ALEXA],
         _wakeWordCallback,
       );
