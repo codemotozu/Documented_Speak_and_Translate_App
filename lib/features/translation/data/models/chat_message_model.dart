@@ -1,3 +1,26 @@
+/// ChatMessage
+///
+/// A class that represents different types of messages in a chat interface. // Eine Klasse, die verschiedene Arten von Nachrichten in einer Chat-Oberfläche darstellt.
+/// Handles different states of messages including user input, AI responses, loading states, and errors. // Behandelt verschiedene Zustände von Nachrichten, einschließlich Benutzereingaben, KI-Antworten, Ladezustände und Fehler.
+///
+/// Usage:
+/// ```dart
+/// // Create a user message // Erstellen einer Benutzernachricht
+/// final userMessage = ChatMessage.user("Hello, how can I help you?");
+///
+/// // Create an AI message with translation // Erstellen einer KI-Nachricht mit Übersetzung
+/// final aiMessage = ChatMessage.ai(translation: translationObject);
+///
+/// // Create a loading message while waiting for AI response // Erstellen einer Ladenachricht während des Wartens auf eine KI-Antwort
+/// final loadingMessage = ChatMessage.aiLoading();
+///
+/// // Create an error message // Erstellen einer Fehlernachricht
+/// final errorMessage = ChatMessage.aiError("Failed to get response");
+/// ```
+///
+/// EN: Provides different constructors for various message types and states in a chat application.
+/// DE: Bietet verschiedene Konstruktoren für verschiedene Nachrichtentypen und -zustände in einer Chat-Anwendung.
+
 import '../../domain/entities/translation.dart'; // Imports the Translation entity from a relative path. // Importiert die Translation-Entität aus einem relativen Pfad.
 
 enum MessageType { user, ai } // Defines an enumeration with two possible message types: user and AI. // Definiert eine Aufzählung mit zwei möglichen Nachrichtentypen: Benutzer und KI.
