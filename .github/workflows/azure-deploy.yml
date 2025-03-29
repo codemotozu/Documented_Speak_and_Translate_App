@@ -1,169 +1,169 @@
-name: Deploy to Azure Container Apps
+name: Deploy to Azure Container Apps # Workflow name that appears in GitHub Actions interface. # Name des Workflows, der in der GitHub Actions-Oberfläche angezeigt wird.
 
-on:
-  push:
-    branches: [ "main" ]
-    paths:
-      - 'server/**'
-      - '.github/workflows/azure-deploy.yml'
-  pull_request:
-    branches: [ "main" ]
-    paths:
-      - 'server/**'
+on: # Defines when this workflow will run. # Definiert, wann dieser Workflow ausgeführt wird.
+  push: # Triggers on push events. # Wird bei Push-Ereignissen ausgelöst.
+    branches: [ "main" ] # Only runs when pushing to the main branch. # Wird nur ausgeführt, wenn auf den main-Branch gepusht wird.
+    paths: # Specifies which file paths should trigger the workflow. # Gibt an, welche Dateipfade den Workflow auslösen sollen.
+      - 'server/**' # Triggers when any files in the server directory change. # Wird ausgelöst, wenn sich Dateien im server-Verzeichnis ändern.
+      - '.github/workflows/azure-deploy.yml' # Triggers when this workflow file itself changes. # Wird ausgelöst, wenn sich diese Workflow-Datei selbst ändert.
+  pull_request: # Triggers on pull request events. # Wird bei Pull-Request-Ereignissen ausgelöst.
+    branches: [ "main" ] # Only runs for pull requests targeting the main branch. # Wird nur für Pull-Requests ausgeführt, die auf den main-Branch abzielen.
+    paths: # Specifies which file paths should trigger the workflow on pull requests. # Gibt an, welche Dateipfade den Workflow bei Pull-Requests auslösen sollen.
+      - 'server/**' # Triggers when any files in the server directory change in a PR. # Wird ausgelöst, wenn sich Dateien im server-Verzeichnis in einem PR ändern.
 
-env:
-  DOCKER_IMAGE_NAME: codemotozu/speak-and-translate-azure-server
-  AZURE_CONTAINER_APP_NAME: docker-and-azure
-  RESOURCE_GROUP: SpeakAndTranslateAppDockerAzure
+env: # Defines environment variables available to all jobs in the workflow. # Definiert Umgebungsvariablen, die für alle Jobs im Workflow verfügbar sind.
+  DOCKER_IMAGE_NAME: codemotozu/speak-and-translate-azure-server # Name of the Docker image to build and push. # Name des Docker-Images, das gebaut und gepusht werden soll.
+  AZURE_CONTAINER_APP_NAME: docker-and-azure # Name of the Azure Container App to deploy to. # Name der Azure Container App, in die deployed werden soll.
+  RESOURCE_GROUP: SpeakAndTranslateAppDockerAzure # Azure Resource Group that contains the Container App. # Azure-Ressourcengruppe, die die Container App enthält.
 
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
+jobs: # Defines the jobs that run in this workflow. # Definiert die Jobs, die in diesem Workflow ausgeführt werden.
+  build-and-deploy: # Name of the job. # Name des Jobs.
+    runs-on: ubuntu-latest # Specifies the runner environment (Ubuntu). # Gibt die Runner-Umgebung an (Ubuntu).
     
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+    steps: # List of steps to execute in this job. # Liste der Schritte, die in diesem Job ausgeführt werden.
+    - name: Checkout repository # Step name for code checkout. # Schrittname für das Auschecken des Codes.
+      uses: actions/checkout@v3 # Uses GitHub's checkout action to get the repository code. # Verwendet die GitHub-Checkout-Aktion, um den Repository-Code zu erhalten.
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
+    - name: Set up Docker Buildx # Step name for Docker Buildx setup. # Schrittname für das Einrichten von Docker Buildx.
+      uses: docker/setup-buildx-action@v2 # Sets up Docker Buildx for multi-platform builds. # Richtet Docker Buildx für Multi-Plattform-Builds ein.
 
-    - name: Login to Docker Hub
-      uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: Login to Docker Hub # Step name for Docker Hub authentication. # Schrittname für die Docker Hub-Authentifizierung.
+      uses: docker/login-action@v2 # Uses Docker's login action to authenticate with Docker Hub. # Verwendet die Docker-Login-Aktion zur Authentifizierung bei Docker Hub.
+      with: # Input parameters for the action. # Eingabeparameter für die Aktion.
+        username: ${{ secrets.DOCKERHUB_USERNAME }} # Docker Hub username from GitHub secrets. # Docker Hub-Benutzername aus GitHub-Secrets.
+        password: ${{ secrets.DOCKERHUB_TOKEN }} # Docker Hub token from GitHub secrets. # Docker Hub-Token aus GitHub-Secrets.
 
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v4
-      with:
-        context: ./server
-        push: true
-        tags: ${{ env.DOCKER_IMAGE_NAME }}:latest,${{ env.DOCKER_IMAGE_NAME }}:${{ github.sha }}
-        build-args: |
-          AZURE_SPEECH_KEY=${{ secrets.AZURE_SPEECH_KEY }}
-          AZURE_SPEECH_REGION=${{ secrets.AZURE_SPEECH_REGION }}
-          GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}
-          PICOVOICE_API_KEY=${{ secrets.PICOVOICE_API_KEY }}
-          TTS_DEVICE=${{ secrets.TTS_DEVICE }}
+    - name: Build and push Docker image # Step name for building and pushing the Docker image. # Schrittname für den Bau und das Pushen des Docker-Images.
+      uses: docker/build-push-action@v4 # Uses Docker's build and push action. # Verwendet die Docker-Build-und-Push-Aktion.
+      with: # Input parameters for the action. # Eingabeparameter für die Aktion.
+        context: ./server # Specifies the build context (server directory). # Gibt den Build-Kontext an (server-Verzeichnis).
+        push: true # Pushes the image to Docker Hub. # Pusht das Image zu Docker Hub.
+        tags: ${{ env.DOCKER_IMAGE_NAME }}:latest,${{ env.DOCKER_IMAGE_NAME }}:${{ github.sha }} # Tags the image with 'latest' and the commit SHA. # Taggt das Image mit 'latest' und dem Commit-SHA.
+        build-args: | # Build arguments passed to the Dockerfile. # Build-Argumente, die an das Dockerfile übergeben werden.
+          AZURE_SPEECH_KEY=${{ secrets.AZURE_SPEECH_KEY }} # Azure Speech API key from GitHub secrets. # Azure Speech API-Schlüssel aus GitHub-Secrets.
+          AZURE_SPEECH_REGION=${{ secrets.AZURE_SPEECH_REGION }} # Azure Speech region from GitHub secrets. # Azure Speech-Region aus GitHub-Secrets.
+          GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }} # Gemini API key from GitHub secrets. # Gemini-API-Schlüssel aus GitHub-Secrets.
+          PICOVOICE_API_KEY=${{ secrets.PICOVOICE_API_KEY }} # Picovoice API key from GitHub secrets. # Picovoice-API-Schlüssel aus GitHub-Secrets.
+          TTS_DEVICE=${{ secrets.TTS_DEVICE }} # TTS device configuration from GitHub secrets. # TTS-Gerätekonfiguration aus GitHub-Secrets.
         
-    - name: Azure Login
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: Azure Login # Step name for Azure authentication. # Schrittname für die Azure-Authentifizierung.
+      uses: azure/login@v1 # Uses Azure's login action. # Verwendet die Azure-Login-Aktion.
+      with: # Input parameters for the action. # Eingabeparameter für die Aktion.
+        creds: ${{ secrets.AZURE_CREDENTIALS }} # Azure credentials from GitHub secrets. # Azure-Anmeldeinformationen aus GitHub-Secrets.
 
-    - name: Deploy to Azure Container App
-      uses: azure/CLI@v1
-      with:
-        inlineScript: |
-          echo "Deploying to Azure Container App..."
+    - name: Deploy to Azure Container App # Step name for deployment to Azure Container App. # Schrittname für die Bereitstellung in der Azure Container App.
+      uses: azure/CLI@v1 # Uses Azure CLI action to run Azure commands. # Verwendet die Azure CLI-Aktion, um Azure-Befehle auszuführen.
+      with: # Input parameters for the action. # Eingabeparameter für die Aktion.
+        inlineScript: | # Inline shell script to execute. # Inline-Shell-Skript, das ausgeführt werden soll.
+          echo "Deploying to Azure Container App..." # Outputs a deployment message. # Gibt eine Bereitstellungsnachricht aus.
           
-          # Check if the container app exists
+          # Check if the container app exists # Prüft, ob die Container-App existiert.
           if az containerapp show --name ${{ env.AZURE_CONTAINER_APP_NAME }} --resource-group ${{ env.RESOURCE_GROUP }} --query "properties.provisioningState" -o tsv 2>/dev/null; then
-            echo "Updating existing container app..."
+            echo "Updating existing container app..." # Outputs an update message if app exists. # Gibt eine Aktualisierungsnachricht aus, wenn die App existiert.
             
-            # Update existing container app with explicit environment variables
+            # Update existing container app with explicit environment variables # Aktualisiert die bestehende Container-App mit expliziten Umgebungsvariablen.
             az containerapp update \
-              --name ${{ env.AZURE_CONTAINER_APP_NAME }} \
-              --resource-group ${{ env.RESOURCE_GROUP }} \
-              --image ${{ env.DOCKER_IMAGE_NAME }}:${{ github.sha }} \
-              --cpu 1.0 \
-              --memory 2.0Gi \
-              --min-replicas 1 \
-              --max-replicas 1 \
-              --set-env-vars \
-                AZURE_SPEECH_KEY=${{ secrets.AZURE_SPEECH_KEY }} \
-                AZURE_SPEECH_REGION=${{ secrets.AZURE_SPEECH_REGION }} \
-                GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }} \
-                PICOVOICE_API_KEY=${{ secrets.PICOVOICE_API_KEY }} \
-                TTS_DEVICE="cpu" \
-                CONTAINER_ENV="true" \
-                PORT=8000 \
-                SPEECH_CONTAINER_OPTION=1 \
-                SPEECH_SYNTHESIS_PLATFORM_CONFIG=container \
-                LD_LIBRARY_PATH="/usr/lib/x86_64-linux-gnu" \
-                GST_PLUGIN_PATH="/usr/lib/x86_64-linux-gnu/gstreamer-1.0"
+              --name ${{ env.AZURE_CONTAINER_APP_NAME }} \ # Name of the container app to update. # Name der zu aktualisierenden Container-App.
+              --resource-group ${{ env.RESOURCE_GROUP }} \ # Resource group containing the app. # Ressourcengruppe, die die App enthält.
+              --image ${{ env.DOCKER_IMAGE_NAME }}:${{ github.sha }} \ # Docker image to deploy with commit SHA tag. # Zu deployen des Docker-Images mit Commit-SHA-Tag.
+              --cpu 1.0 \ # CPU allocation (1.0 cores). # CPU-Zuweisung (1,0 Kerne).
+              --memory 2.0Gi \ # Memory allocation (2.0 GB). # Speicherzuweisung (2,0 GB).
+              --min-replicas 1 \ # Minimum number of container instances. # Minimale Anzahl von Container-Instanzen.
+              --max-replicas 1 \ # Maximum number of container instances. # Maximale Anzahl von Container-Instanzen.
+              --set-env-vars \ # Sets environment variables for the container. # Setzt Umgebungsvariablen für den Container.
+                AZURE_SPEECH_KEY=${{ secrets.AZURE_SPEECH_KEY }} \ # Azure Speech API key. # Azure Speech API-Schlüssel.
+                AZURE_SPEECH_REGION=${{ secrets.AZURE_SPEECH_REGION }} \ # Azure Speech region. # Azure Speech-Region.
+                GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }} \ # Gemini API key. # Gemini-API-Schlüssel.
+                PICOVOICE_API_KEY=${{ secrets.PICOVOICE_API_KEY }} \ # Picovoice API key. # Picovoice-API-Schlüssel.
+                TTS_DEVICE="cpu" \ # Text-to-speech device setting (CPU). # Einstellung für Text-zu-Sprache-Gerät (CPU).
+                CONTAINER_ENV="true" \ # Flag indicating container environment. # Flag, das die Container-Umgebung anzeigt.
+                PORT=8000 \ # Port the app listens on. # Port, auf dem die App hört.
+                SPEECH_CONTAINER_OPTION=1 \ # Speech container configuration option. # Sprachcontainer-Konfigurationsoption.
+                SPEECH_SYNTHESIS_PLATFORM_CONFIG=container \ # Speech synthesis platform config. # Sprachsynthese-Plattformkonfiguration.
+                LD_LIBRARY_PATH="/usr/lib/x86_64-linux-gnu" \ # Linux library path for dependencies. # Linux-Bibliothekspfad für Abhängigkeiten.
+                GST_PLUGIN_PATH="/usr/lib/x86_64-linux-gnu/gstreamer-1.0" # GStreamer plugin path. # GStreamer-Plugin-Pfad.
           else
-            echo "Creating new container app..."
+            echo "Creating new container app..." # Outputs creation message if app doesn't exist. # Gibt eine Erstellungsmeldung aus, wenn die App nicht existiert.
             
-            # Get existing environment or create new one
+            # Get existing environment or create new one # Holt die bestehende Umgebung oder erstellt eine neue.
             ENV_EXISTS=$(az containerapp env list --resource-group ${{ env.RESOURCE_GROUP }} --query "[?name=='ca-env-${{ env.RESOURCE_GROUP }}']" -o tsv)
             if [ -z "$ENV_EXISTS" ]; then
-              echo "Creating new container app environment..."
-              az containerapp env create \
-                --name ca-env-${{ env.RESOURCE_GROUP }} \
-                --resource-group ${{ env.RESOURCE_GROUP }} \
-                --location westus2
+              echo "Creating new container app environment..." # Outputs environment creation message. # Gibt eine Umgebungserstellungsmeldung aus.
+              az containerapp env create \ # Creates a new container app environment. # Erstellt eine neue Container-App-Umgebung.
+                --name ca-env-${{ env.RESOURCE_GROUP }} \ # Name of the environment. # Name der Umgebung.
+                --resource-group ${{ env.RESOURCE_GROUP }} \ # Resource group for the environment. # Ressourcengruppe für die Umgebung.
+                --location westus2 # Azure region (West US 2). # Azure-Region (West US 2).
             fi
             
-            # Create new container app with required environment variables
+            # Create new container app with required environment variables # Erstellt eine neue Container-App mit erforderlichen Umgebungsvariablen.
             az containerapp create \
-              --name ${{ env.AZURE_CONTAINER_APP_NAME }} \
-              --resource-group ${{ env.RESOURCE_GROUP }} \
-              --environment ca-env-${{ env.RESOURCE_GROUP }} \
-              --image ${{ env.DOCKER_IMAGE_NAME }}:${{ github.sha }} \
-              --target-port 8000 \
-              --ingress external \
-              --cpu 1.0 \
-              --memory 2.0Gi \
-              --min-replicas 1 \
-              --max-replicas 1 \
-              --env-vars \
-                AZURE_SPEECH_KEY=${{ secrets.AZURE_SPEECH_KEY }} \
-                AZURE_SPEECH_REGION=${{ secrets.AZURE_SPEECH_REGION }} \
-                GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }} \
-                PICOVOICE_API_KEY=${{ secrets.PICOVOICE_API_KEY }} \
-                TTS_DEVICE="cpu" \
-                CONTAINER_ENV="true" \
-                PORT=8000 \
-                SPEECH_CONTAINER_OPTION=1 \
-                SPEECH_SYNTHESIS_PLATFORM_CONFIG=container \
-                LD_LIBRARY_PATH="/usr/lib/x86_64-linux-gnu" \
-                GST_PLUGIN_PATH="/usr/lib/x86_64-linux-gnu/gstreamer-1.0"
+              --name ${{ env.AZURE_CONTAINER_APP_NAME }} \ # Name of the new container app. # Name der neuen Container-App.
+              --resource-group ${{ env.RESOURCE_GROUP }} \ # Resource group for the app. # Ressourcengruppe für die App.
+              --environment ca-env-${{ env.RESOURCE_GROUP }} \ # Environment for the container app. # Umgebung für die Container-App.
+              --image ${{ env.DOCKER_IMAGE_NAME }}:${{ github.sha }} \ # Docker image to deploy. # Zu deployendes Docker-Image.
+              --target-port 8000 \ # Port the container exposes. # Port, den der Container exponiert.
+              --ingress external \ # Makes the app accessible from the internet. # Macht die App vom Internet aus zugänglich.
+              --cpu 1.0 \ # CPU allocation (1.0 cores). # CPU-Zuweisung (1,0 Kerne).
+              --memory 2.0Gi \ # Memory allocation (2.0 GB). # Speicherzuweisung (2,0 GB).
+              --min-replicas 1 \ # Minimum number of container instances. # Minimale Anzahl von Container-Instanzen.
+              --max-replicas 1 \ # Maximum number of container instances. # Maximale Anzahl von Container-Instanzen.
+              --env-vars \ # Environment variables for the container. # Umgebungsvariablen für den Container.
+                AZURE_SPEECH_KEY=${{ secrets.AZURE_SPEECH_KEY }} \ # Azure Speech API key. # Azure Speech API-Schlüssel.
+                AZURE_SPEECH_REGION=${{ secrets.AZURE_SPEECH_REGION }} \ # Azure Speech region. # Azure Speech-Region.
+                GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }} \ # Gemini API key. # Gemini-API-Schlüssel.
+                PICOVOICE_API_KEY=${{ secrets.PICOVOICE_API_KEY }} \ # Picovoice API key. # Picovoice-API-Schlüssel.
+                TTS_DEVICE="cpu" \ # Text-to-speech device setting (CPU). # Einstellung für Text-zu-Sprache-Gerät (CPU).
+                CONTAINER_ENV="true" \ # Flag indicating container environment. # Flag, das die Container-Umgebung anzeigt.
+                PORT=8000 \ # Port the app listens on. # Port, auf dem die App hört.
+                SPEECH_CONTAINER_OPTION=1 \ # Speech container configuration option. # Sprachcontainer-Konfigurationsoption.
+                SPEECH_SYNTHESIS_PLATFORM_CONFIG=container \ # Speech synthesis platform config. # Sprachsynthese-Plattformkonfiguration.
+                LD_LIBRARY_PATH="/usr/lib/x86_64-linux-gnu" \ # Linux library path for dependencies. # Linux-Bibliothekspfad für Abhängigkeiten.
+                GST_PLUGIN_PATH="/usr/lib/x86_64-linux-gnu/gstreamer-1.0" # GStreamer plugin path. # GStreamer-Plugin-Pfad.
           fi
           
-          # Enhanced deployment monitoring
-          echo "Waiting for deployment to complete..."
-          TIMEOUT=900
-          START_TIME=$(date +%s)
+          # Enhanced deployment monitoring # Erweiterte Bereitstellungsüberwachung.
+          echo "Waiting for deployment to complete..." # Outputs waiting message. # Gibt eine Wartenmeldung aus.
+          TIMEOUT=900 # Maximum wait time in seconds (15 minutes). # Maximale Wartezeit in Sekunden (15 Minuten).
+          START_TIME=$(date +%s) # Records the start time. # Erfasst die Startzeit.
           
-          while true; do
-            CURRENT_TIME=$(date +%s)
-            ELAPSED_TIME=$((CURRENT_TIME - START_TIME))
+          while true; do # Infinite loop for monitoring until conditions are met. # Endlosschleife zur Überwachung, bis Bedingungen erfüllt sind.
+            CURRENT_TIME=$(date +%s) # Gets the current time. # Holt die aktuelle Zeit.
+            ELAPSED_TIME=$((CURRENT_TIME - START_TIME)) # Calculates elapsed time. # Berechnet die verstrichene Zeit.
             
-            if [ $ELAPSED_TIME -gt $TIMEOUT ]; then
-              echo "Timeout waiting for deployment."
-              az containerapp logs show --name ${{ env.AZURE_CONTAINER_APP_NAME }} --resource-group ${{ env.RESOURCE_GROUP }} --follow false
-              exit 1
+            if [ $ELAPSED_TIME -gt $TIMEOUT ]; then # Checks if timeout has been exceeded. # Prüft, ob das Timeout überschritten wurde.
+              echo "Timeout waiting for deployment." # Outputs timeout message. # Gibt eine Timeout-Meldung aus.
+              az containerapp logs show --name ${{ env.AZURE_CONTAINER_APP_NAME }} --resource-group ${{ env.RESOURCE_GROUP }} --follow false # Shows logs on timeout. # Zeigt Logs bei Timeout an.
+              exit 1 # Exits with error code 1. # Beendet mit Fehlercode 1.
             fi
             
-            APP_INFO=$(az containerapp show --name ${{ env.AZURE_CONTAINER_APP_NAME }} --resource-group ${{ env.RESOURCE_GROUP }})
-            PROVISION_STATE=$(echo "$APP_INFO" | jq -r '.properties.provisioningState')
-            RUNNING_STATUS=$(echo "$APP_INFO" | jq -r '.properties.runningStatus')
-            REVISION_NAME=$(echo "$APP_INFO" | jq -r '.properties.latestRevisionName')
-            LATEST_READY_REVISION=$(echo "$APP_INFO" | jq -r '.properties.latestReadyRevisionName')
+            APP_INFO=$(az containerapp show --name ${{ env.AZURE_CONTAINER_APP_NAME }} --resource-group ${{ env.RESOURCE_GROUP }}) # Gets app info. # Holt App-Informationen.
+            PROVISION_STATE=$(echo "$APP_INFO" | jq -r '.properties.provisioningState') # Extracts provisioning state. # Extrahiert den Bereitstellungsstatus.
+            RUNNING_STATUS=$(echo "$APP_INFO" | jq -r '.properties.runningStatus') # Extracts running status. # Extrahiert den Laufstatus.
+            REVISION_NAME=$(echo "$APP_INFO" | jq -r '.properties.latestRevisionName') # Extracts latest revision name. # Extrahiert den Namen der neuesten Revision.
+            LATEST_READY_REVISION=$(echo "$APP_INFO" | jq -r '.properties.latestReadyRevisionName') # Extracts ready revision name. # Extrahiert den Namen der bereiten Revision.
             
-            echo "Revision: $REVISION_NAME"
-            echo "Provision State: $PROVISION_STATE"
-            echo "Running Status: $RUNNING_STATUS"
-            echo "Ready Revision: $LATEST_READY_REVISION"
+            echo "Revision: $REVISION_NAME" # Outputs revision name. # Gibt den Revisionsnamen aus.
+            echo "Provision State: $PROVISION_STATE" # Outputs provisioning state. # Gibt den Bereitstellungsstatus aus.
+            echo "Running Status: $RUNNING_STATUS" # Outputs running status. # Gibt den Laufstatus aus.
+            echo "Ready Revision: $LATEST_READY_REVISION" # Outputs ready revision name. # Gibt den Namen der bereiten Revision aus.
             
-            if [ "$PROVISION_STATE" == "Succeeded" ] && [ "$RUNNING_STATUS" == "Running" ]; then
-              echo "Deployment successful!"
-              FQDN=$(echo "$APP_INFO" | jq -r '.properties.configuration.ingress.fqdn')
-              echo "Application URL: https://$FQDN"
+            if [ "$PROVISION_STATE" == "Succeeded" ] && [ "$RUNNING_STATUS" == "Running" ]; then # Checks if deployment is successful. # Prüft, ob die Bereitstellung erfolgreich ist.
+              echo "Deployment successful!" # Outputs success message. # Gibt eine Erfolgsmeldung aus.
+              FQDN=$(echo "$APP_INFO" | jq -r '.properties.configuration.ingress.fqdn') # Extracts the app URL. # Extrahiert die App-URL.
+              echo "Application URL: https://$FQDN" # Outputs the application URL. # Gibt die Anwendungs-URL aus.
               
-              sleep 20  # Allow service warmup
+              sleep 20  # Allows service warmup time (20 seconds). # Ermöglicht Aufwärmzeit für den Dienst (20 Sekunden).
               
-              echo "Final logs check:"
-              az containerapp logs show --name ${{ env.AZURE_CONTAINER_APP_NAME }} --resource-group ${{ env.RESOURCE_GROUP }} --follow false --tail 50
-              break
-            elif [ "$PROVISION_STATE" == "Failed" ]; then
-              echo "Deployment failed. Fetching logs..."
-              az containerapp logs show --name ${{ env.AZURE_CONTAINER_APP_NAME }} --resource-group ${{ env.RESOURCE_GROUP }} --follow false
-              exit 1
-            elif [ "$REVISION_NAME" != "$LATEST_READY_REVISION" ] && [ -n "$LATEST_READY_REVISION" ]; then
-              echo "Waiting for new revision..."
+              echo "Final logs check:" # Outputs final logs message. # Gibt eine Meldung für die finalen Logs aus.
+              az containerapp logs show --name ${{ env.AZURE_CONTAINER_APP_NAME }} --resource-group ${{ env.RESOURCE_GROUP }} --follow false --tail 50 # Shows the last 50 log entries. # Zeigt die letzten 50 Logeinträge an.
+              break # Exits the monitoring loop. # Beendet die Überwachungsschleife.
+            elif [ "$PROVISION_STATE" == "Failed" ]; then # Checks if deployment failed. # Prüft, ob die Bereitstellung fehlgeschlagen ist.
+              echo "Deployment failed. Fetching logs..." # Outputs failure message. # Gibt eine Fehlermeldung aus.
+              az containerapp logs show --name ${{ env.AZURE_CONTAINER_APP_NAME }} --resource-group ${{ env.RESOURCE_GROUP }} --follow false # Shows logs on failure. # Zeigt Logs bei Fehlschlag an.
+              exit 1 # Exits with error code 1. # Beendet mit Fehlercode 1.
+            elif [ "$REVISION_NAME" != "$LATEST_READY_REVISION" ] && [ -n "$LATEST_READY_REVISION" ]; then # Checks if waiting for a new revision. # Prüft, ob auf eine neue Revision gewartet wird.
+              echo "Waiting for new revision..." # Outputs waiting for revision message. # Gibt eine Meldung für das Warten auf Revision aus.
             fi
             
-            sleep 15
-          done
+            sleep 15 # Waits 15 seconds before next check. # Wartet 15 Sekunden vor der nächsten Prüfung.
+          done # End of the monitoring loop. # Ende der Überwachungsschleife.
