@@ -1,4 +1,4 @@
-/// Translation
+/// Translation 
 /// 
 /// A data model class that represents a translation with rich metadata. // Eine Datenmodellklasse, die eine Übersetzung mit umfangreichen Metadaten darstellt.
 /// Stores both the original and translated text along with additional language information. // Speichert sowohl den Original- als auch den übersetzten Text zusammen mit zusätzlichen Sprachinformationen.
