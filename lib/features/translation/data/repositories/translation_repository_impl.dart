@@ -1,3 +1,37 @@
+/// TranslationRepositoryImpl
+/// 
+/// A repository implementation that handles translation services, audio playback, and speech recognition. // Eine Repository-Implementierung, die Übersetzungsdienste, Audiowiedergabe und Spracherkennung verwaltet.
+/// Provides communication with translation APIs and manages various audio functionalities. // Bietet Kommunikation mit Übersetzungs-APIs und verwaltet verschiedene Audiofunktionen.
+///
+/// This class is responsible for: // Diese Klasse ist verantwortlich für:
+/// - Fetching translations from a remote API // - Abrufen von Übersetzungen von einer Remote-API
+/// - Playing audio of translations // - Abspielen von Übersetzungsaudio
+/// - Managing UI sound effects // - Verwaltung von UI-Soundeffekten
+/// - Converting speech to text (audio input processing) // - Umwandlung von Sprache in Text (Audioeingabeverarbeitung)
+/// 
+/// Usage:
+/// ```dart
+/// // Create an instance of the repository // Erstellen einer Instanz des Repositorys
+/// final translationRepo = TranslationRepositoryImpl();
+/// 
+/// // Get a translation from text // Eine Übersetzung aus Text abrufen
+/// final translation = await translationRepo.getTranslation("Hello world");
+/// 
+/// // Play the audio of a translation // Das Audio einer Übersetzung abspielen
+/// if (translation.audioPath != null) {
+///   await translationRepo.playAudio(translation.audioPath!);
+/// }
+/// 
+/// // Convert audio input to text // Audioeingabe in Text umwandeln
+/// final text = await translationRepo.processAudioInput("path/to/recording.wav");
+/// 
+/// // Clean up resources when done // Ressourcen bereinigen, wenn fertig
+/// translationRepo.dispose();
+/// ```
+///
+/// EN: Implements the TranslationRepository interface to provide translation services, audio playback, and speech-to-text functionality.
+/// DE: Implementiert die TranslationRepository-Schnittstelle, um Übersetzungsdienste, Audiowiedergabe und Sprache-zu-Text-Funktionalität bereitzustellen.
+
 import 'package:audio_session/audio_session.dart'; // Imports package for managing audio sessions. // Importiert ein Paket zur Verwaltung von Audiositzungen.
 import 'package:http/http.dart' as http; // Imports HTTP client for API requests. // Importiert HTTP-Client für API-Anfragen.
 import 'package:http/io_client.dart'; // Imports IO client for customized HTTP connections. // Importiert IO-Client für angepasste HTTP-Verbindungen.
@@ -9,6 +43,14 @@ import '../../domain/repositories/translation_repository.dart'; // Imports the r
 import 'package:just_audio/just_audio.dart'; // Imports audio playback capabilities. // Importiert Audiowiedergabefunktionen.
 import 'package:http_parser/http_parser.dart'; // Imports HTTP content-type parsing utilities. // Importiert HTTP-Content-Type-Parsing-Hilfsprogramme.
 
+
+/// AudioMetadata
+///
+/// A simple data class for storing metadata related to audio playback. // Eine einfache Datenklasse zur Speicherung von Metadaten im Zusammenhang mit der Audiowiedergabe.
+/// Used to provide information to audio players for display purposes. // Wird verwendet, um Audiospielern Informationen für Anzeigezwecke bereitzustellen.
+///
+/// EN: Stores metadata for audio files including title, album, and artwork.
+/// DE: Speichert Metadaten für Audiodateien, einschließlich Titel, Album und Artwork.
 
 class AudioMetadata { // Defines a class for storing audio file metadata. // Definiert eine Klasse zur Speicherung von Audiodatei-Metadaten.
   final String album; // The album name for the audio. // Der Albumname für das Audio.
