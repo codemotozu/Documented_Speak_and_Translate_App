@@ -31,6 +31,7 @@
 ///
 /// EN: Models translation data with support for rich metadata and language learning features.
 /// DE: Modelliert Übersetzungsdaten mit Unterstützung für umfangreiche Metadaten und Sprachlernfunktionen.
+
 class Translation { // Defines a class to represent a translation with metadata. // Definiert eine Klasse zur Darstellung einer Übersetzung mit Metadaten.
   final String originalText; // The original text before translation. // Der Originaltext vor der Übersetzung.
   final String translatedText; // The translated version of the text. // Die übersetzte Version des Textes.
