@@ -1,16 +1,26 @@
-# requirements.txt
-fastapi==0.105.0
-uvicorn==0.24.0
-python-multipart
-google-generativeai==0.3.1
-python-dotenv==1.0.0
-pydub==0.25.1
-SpeechRecognition==3.10.0
-pyspellchecker==0.7.2
-regex==2023.10.3
-pydantic==2.5.2
-gunicorn==21.2.0
-azure-cognitiveservices-speech==1.38.0
-azure-common==1.1.28
-azure-core==1.29.5
-PyAudio==0.2.13
+# requirements.txt for SpeakAndTranslate Application
+#
+# A dependencies file listing all Python packages required for the translation and speech API service. # Eine Abhängigkeitsdatei, die alle Python-Pakete auflistet, die für den Übersetzungs- und Sprach-API-Dienst erforderlich sind.
+# Used by pip to install the exact versions of libraries needed to run the application. # Wird von pip verwendet, um die exakten Versionen der Bibliotheken zu installieren, die zum Ausführen der Anwendung benötigt werden.
+#
+# Usage:
+# pip install -r requirements.txt  # Installs all dependencies with specified versions. # Installiert alle Abhängigkeiten mit den angegebenen Versionen.
+#
+# EN: Defines the complete Python package environment needed for multilingual translation and speech processing.
+# DE: Definiert die vollständige Python-Paketumgebung, die für mehrsprachige Übersetzung und Sprachverarbeitung benötigt wird.
+
+fastapi==0.105.0 # Web framework for building the API with automatic OpenAPI documentation. # Web-Framework zum Erstellen der API mit automatischer OpenAPI-Dokumentation.
+uvicorn==0.24.0 # ASGI server implementation for running the FastAPI application. # ASGI-Server-Implementierung zum Ausführen der FastAPI-Anwendung.
+python-multipart # Package for handling file uploads and form data in FastAPI. # Paket zur Verarbeitung von Datei-Uploads und Formulardaten in FastAPI.
+google-generativeai==0.3.1 # Google's Gemini AI client library for text generation and translation. # Googles Gemini-AI-Client-Bibliothek für Texterstellung und Übersetzung.
+python-dotenv==1.0.0 # Library for loading environment variables from .env files. # Bibliothek zum Laden von Umgebungsvariablen aus .env-Dateien.
+pydub==0.25.1 # Audio processing library for manipulating sound files. # Audio-Verarbeitungsbibliothek zur Manipulation von Sounddateien.
+SpeechRecognition==3.10.0 # Library for performing speech recognition with various engines. # Bibliothek zur Durchführung von Spracherkennung mit verschiedenen Engines.
+pyspellchecker==0.7.2 # Spell checking library for correcting text. # Rechtschreibprüfungsbibliothek zur Korrektur von Text.
+regex==2023.10.3 # Enhanced regular expression library for advanced text pattern matching. # Erweiterte reguläre Ausdrucks-Bibliothek für fortgeschrittene Textmustererkennung.
+pydantic==2.5.2 # Data validation and settings management library used by FastAPI. # Datenvalidierungs- und Einstellungsverwaltungsbibliothek, die von FastAPI verwendet wird.
+gunicorn==21.2.0 # WSGI HTTP server for deploying the application in production. # WSGI-HTTP-Server für die Bereitstellung der Anwendung in der Produktion.
+azure-cognitiveservices-speech==1.38.0 # Azure Speech SDK for text-to-speech and speech-to-text services. # Azure Speech SDK für Text-zu-Sprache- und Sprache-zu-Text-Dienste.
+azure-common==1.1.28 # Common functionality for Azure SDK libraries. # Gemeinsame Funktionalität für Azure-SDK-Bibliotheken.
+azure-core==1.29.5 # Core functionality for Azure SDK libraries. # Kernfunktionalität für Azure-SDK-Bibliotheken.
+PyAudio==0.2.13 # Library for audio I/O to interact with microphones and speakers. # Bibliothek für Audio-E/A zur Interaktion mit Mikrofonen und Lautsprechern.
