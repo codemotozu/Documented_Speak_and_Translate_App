@@ -1,4 +1,4 @@
-/// ChatMessage
+/// ChatMessage 
 ///
 /// A class that represents different types of messages in a chat interface. // Eine Klasse, die verschiedene Arten von Nachrichten in einer Chat-Oberfläche darstellt.
 /// Handles different states of messages including user input, AI responses, loading states, and errors. // Behandelt verschiedene Zustände von Nachrichten, einschließlich Benutzereingaben, KI-Antworten, Ladezustände und Fehler.
