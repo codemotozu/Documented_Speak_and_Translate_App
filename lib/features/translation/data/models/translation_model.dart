@@ -1,3 +1,37 @@
+/// Translation
+/// 
+/// A data model class that represents a translation with rich metadata. // Eine Datenmodellklasse, die eine Übersetzung mit umfangreichen Metadaten darstellt.
+/// Stores both the original and translated text along with additional language information. // Speichert sowohl den Original- als auch den übersetzten Text zusammen mit zusätzlichen Sprachinformationen.
+///
+/// The class supports advanced features including: // Die Klasse unterstützt erweiterte Funktionen, darunter:
+/// - Audio pronunciation paths // - Pfade zur Audioaussprache
+/// - Multiple translation variants // - Mehrere Übersetzungsvarianten
+/// - Word-by-word translations // - Wort-für-Wort-Übersetzungen
+/// - Grammatical explanations // - Grammatikalische Erklärungen
+///
+/// Usage:
+/// ```dart
+/// // Create a basic translation // Erstellen einer einfachen Übersetzung
+/// final translation = Translation(
+///   originalText: "Hello world",
+///   translatedText: "Hallo Welt",
+///   sourceLanguage: "en",
+///   targetLanguage: "de"
+/// );
+///
+/// // Parse from JSON data // Aus JSON-Daten parsen
+/// final jsonData = {
+///   'original_text': 'Hello',
+///   'translated_text': 'Hola',
+///   'source_language': 'en',
+///   'target_language': 'es'
+/// };
+/// final translationFromJson = Translation.fromJson(jsonData);
+/// ```
+///
+/// EN: Models translation data with support for rich metadata and language learning features.
+/// DE: Modelliert Übersetzungsdaten mit Unterstützung für umfangreiche Metadaten und Sprachlernfunktionen.
+
 class Translation { // Defines a class to represent a translation with metadata. // Definiert eine Klasse zur Darstellung einer Übersetzung mit Metadaten.
   final String originalText; // The original text before translation. // Der Originaltext vor der Übersetzung.
   final String translatedText; // The translated version of the text. // Die übersetzte Version des Textes.
