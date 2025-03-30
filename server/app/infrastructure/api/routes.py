@@ -1,4 +1,4 @@
-# Speak and Translate API Server
+# Speak and Translate API Server 
 #
 # A FastAPI server that provides endpoints for translation and speech processing. # Ein FastAPI-Server, der Endpunkte für Übersetzung und Sprachverarbeitung bereitstellt.
 # Connects the frontend application to translation and speech services. # Verbindet die Frontend-Anwendung mit Übersetzungs- und Sprachdiensten.
