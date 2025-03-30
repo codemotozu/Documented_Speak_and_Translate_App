@@ -1,26 +1,36 @@
+# Docker Compose Configuration for SpeakAndTranslate
+#
+# A multi-container deployment configuration for the translation and speech API service. # Eine Multi-Container-Bereitstellungskonfiguration für den Übersetzungs- und Sprach-API-Dienst.
+# Orchestrates the container setup with proper networking, environment variables, and health monitoring. # Orchestriert die Container-Einrichtung mit korrektem Netzwerk, Umgebungsvariablen und Gesundheitsüberwachung.
+#
+# Usage:
+# docker-compose up -d  # Starts the service in detached mode. # Startet den Dienst im Hintergrundmodus.
+# docker-compose down   # Stops the service. # Stoppt den Dienst.
+#
+# EN: Defines a complete runtime environment for deploying the translation server with access to sound devices and persistent storage.
+# DE: Definiert eine komplette Laufzeitumgebung für die Bereitstellung des Übersetzungsservers mit Zugriff auf Soundgeräte und persistentem Speicher.
 
-version: '3.8'
+version: '3.8' # Specifies Docker Compose file format version. # Gibt die Docker Compose-Dateiformatversion an.
 
-services:
-  translation-server:
-    build: .
-    ports:
-      - "8000:8000"
-    environment:
-      - AZURE_SPEECH_KEY=${AZURE_SPEECH_KEY}
-      - AZURE_SPEECH_REGION=${AZURE_SPEECH_REGION}
-      - GEMINI_API_KEY=${GEMINI_API_KEY}
-      - TTS_DEVICE=${TTS_DEVICE}
-      - PICOVOICE_API_KEY=${PICOVOICE_API_KEY}
-      - PORT=8000
-    volumes:
-      - /tmp/tts_audio:/tmp/tts_audio
-    devices:
-      - "/dev/snd:/dev/snd"
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
+services: # Defines the services section where container configurations are defined. # Definiert den Services-Abschnitt, in dem Container-Konfigurationen festgelegt werden.
+  translation-server: # Names the service "translation-server". # Benennt den Dienst "translation-server".
+    build: . # Builds the image using the Dockerfile in the current directory. # Baut das Image mit dem Dockerfile im aktuellen Verzeichnis.
+    ports: # Defines port mappings between host and container. # Definiert Port-Zuordnungen zwischen Host und Container.
+      - "8000:8000" # Maps port 8000 on the host to port 8000 in the container. # Ordnet Port 8000 auf dem Host dem Port 8000 im Container zu.
+    environment: # Defines environment variables for the container. # Definiert Umgebungsvariablen für den Container.
+      - AZURE_SPEECH_KEY=${AZURE_SPEECH_KEY} # Passes Azure Speech API key from host environment. # Übergibt den Azure Speech API-Schlüssel aus der Host-Umgebung.
+      - AZURE_SPEECH_REGION=${AZURE_SPEECH_REGION} # Passes Azure Speech region from host environment. # Übergibt die Azure Speech-Region aus der Host-Umgebung.
+      - GEMINI_API_KEY=${GEMINI_API_KEY} # Passes Gemini AI API key from host environment. # Übergibt den Gemini AI API-Schlüssel aus der Host-Umgebung.
+      - TTS_DEVICE=${TTS_DEVICE} # Passes text-to-speech device setting from host environment. # Übergibt die Text-zu-Sprache-Geräteeinstellung aus der Host-Umgebung.
+      - PICOVOICE_API_KEY=${PICOVOICE_API_KEY} # Passes Picovoice API key for wake word detection from host environment. # Übergibt den Picovoice API-Schlüssel für die Aktivierungswort-Erkennung aus der Host-Umgebung.
+      - PORT=8000 # Sets the server port to 8000. # Setzt den Server-Port auf 8000.
+    volumes: # Defines volume mappings for persistent storage. # Definiert Volume-Zuordnungen für persistente Speicherung.
+      - /tmp/tts_audio:/tmp/tts_audio # Maps the audio directory from host to container for file sharing. # Ordnet das Audio-Verzeichnis vom Host zum Container für die Dateifreigabe zu.
+    devices: # Defines device mappings for hardware access. # Definiert Gerätezuordnungen für Hardwarezugriff.
+      - "/dev/snd:/dev/snd" # Maps the sound device from host to container for audio processing. # Ordnet das Soundgerät vom Host zum Container für die Audioverarbeitung zu.
+    restart: unless-stopped # Configures the container to restart automatically unless manually stopped. # Konfiguriert den Container so, dass er automatisch neu startet, es sei denn, er wird manuell gestoppt.
+    healthcheck: # Defines a health check to monitor container status. # Definiert eine Gesundheitsprüfung zur Überwachung des Container-Status.
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"] # Defines command to check if service is healthy by calling its health endpoint. # Definiert den Befehl zur Überprüfung, ob der Dienst gesund ist, indem sein Gesundheitsendpunkt aufgerufen wird.
+      interval: 30s # Runs the health check every 30 seconds. # Führt die Gesundheitsprüfung alle 30 Sekunden durch.
+      timeout: 10s # Waits up to 10 seconds for health check response. # Wartet bis zu 10 Sekunden auf die Antwort der Gesundheitsprüfung.
+      retries: 3 # Retries health check 3 times before marking container unhealthy. # Wiederholt die Gesundheitsprüfung 3 Mal, bevor der Container als ungesund markiert wird.
