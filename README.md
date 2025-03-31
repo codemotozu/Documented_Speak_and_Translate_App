@@ -22,8 +22,8 @@ A cross-platform application built with Flutter and Azure AI services that provi
 - **🎙️ Voice Commands**: Activate microphone with "Jarvis" and stop recording with "Alexa"
 - **🔊 Speech Recognition**: Convert spoken language to text with high accuracy
 - **🌐 Real-time Translation**: Translate between languages with AI-powered accuracy
-- **🗣️ Natural Speech Synthesis**: Hear translations in natural-sounding voices
-- **🧠 Educational Translations**: View word-by-word translations for language learning
+- **🗣️ Natural Speech Synthesis**: Hear translations in natural-sounding voices with language-specific pronunciation
+- **🧠 Educational Translations**: View word-by-word translations for language learning with accurate pronunciation in Spanish, German, and English
 - **🎭 Multiple Translation Styles**: Access native, colloquial, informal, and formal translations
 - **💬 Chat Interface**: Track conversation history with visual speech bubbles
 - **🎛️ Hands-Free Mode**: Automatically play translations for continuous conversation
@@ -39,7 +39,7 @@ The application provides advanced translation options with four different formal
 3. **Informal**: Relaxed language for casual situations
 4. **Formal**: Professional language for business or formal contexts
 
-Each translation includes word-by-word explanations to help users understand the structure and vocabulary of different languages, making this application particularly valuable for language learners.
+Each translation includes word-by-word explanations to help users understand the structure and vocabulary of different languages. These word-by-word translations feature authentic pronunciation in each language (Spanish, German, and English), allowing users to hear how each word should be properly pronounced in its native form. This makes the application particularly valuable for language learners seeking to improve both comprehension and pronunciation.
 
 ## 🔧 Technical Implementation
 
@@ -312,8 +312,8 @@ Eine plattformübergreifende Anwendung, entwickelt mit Flutter und Azure KI-Dien
 - **🎙️ Sprachbefehle**: Aktivieren Sie das Mikrofon mit "Jarvis" und stoppen Sie die Aufnahme mit "Alexa"
 - **🔊 Spracherkennung**: Konvertieren Sie gesprochene Sprache mit hoher Genauigkeit in Text
 - **🌐 Echtzeit-Übersetzung**: Übersetzen Sie zwischen Sprachen mit KI-gestützter Präzision
-- **🗣️ Natürliche Sprachsynthese**: Hören Sie Übersetzungen in natürlich klingenden Stimmen
-- **🧠 Lehrreiche Übersetzungen**: Sehen Sie Wort-für-Wort-Übersetzungen zum Sprachenlernen
+- **🗣️ Natürliche Sprachsynthese**: Hören Sie Übersetzungen in natürlich klingenden Stimmen mit language-specific pronunciation
+- **🧠 Lehrreiche Übersetzungen**: Sehen Sie Wort-für-Wort-Übersetzungen zum Sprachenlernen with accurate pronunciation in Spanish, German, and English
 - **🎭 Mehrere Übersetzungsstile**: Zugriff auf muttersprachliche, umgangssprachliche, informelle und formelle Übersetzungen
 - **💬 Chat-Oberfläche**: Verfolgen Sie den Gesprächsverlauf mit visuellen Sprechblasen
 - **🎛️ Freisprechmodus**: Spielen Sie Übersetzungen automatisch für fortlaufende Gespräche ab
@@ -329,7 +329,7 @@ Die Anwendung bietet fortschrittliche Übersetzungsoptionen mit vier verschieden
 3. **Informell**: Entspannte Sprache für lockere Situationen
 4. **Formell**: Professionelle Sprache für geschäftliche oder formelle Kontexte
 
-Jede Übersetzung enthält Wort-für-Wort-Erklärungen, um Benutzern zu helfen, die Struktur und den Wortschatz verschiedener Sprachen zu verstehen, was diese Anwendung besonders wertvoll für Sprachenlerner macht.
+Jede Übersetzung enthält Wort-für-Wort-Erklärungen, um Benutzern zu helfen, die Struktur und den Wortschatz verschiedener Sprachen zu verstehen. These word-by-word translations feature authentic pronunciation in each language (Spanish, German, and English), allowing users to hear how each word should be properly pronounced in its native form. This makes the application particularly valuable for language learners seeking to improve both comprehension and pronunciation.
 
 ## 🔧 Technische Umsetzung
 
